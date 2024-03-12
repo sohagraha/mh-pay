@@ -1,0 +1,97 @@
+<html>
+  <head>
+    <script
+      src="https://ap-gateway.mastercard.com/static/checkout/checkout.min.js"
+      data-error="errorCallback"
+      data-cancel="cancelCallback"
+    ></script>
+    <script type="text/javascript">
+      function errorCallback(error) {
+        console.log(JSON.stringify(error));
+      }
+      function cancelCallback() {
+        console.log("Payment cancelled");
+      }
+
+      // Function to get query parameters from URL
+      function getQueryParam(param) {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        return urlParams.get(param);
+      }
+
+      // Get the session ID from the URL
+      const sessionId = getQueryParam("session_id");
+
+      // Configure Checkout with the session ID
+      if (sessionId) {
+        Checkout.configure({
+          session: {
+            id: sessionId,
+          },
+        });
+      } else {
+        console.error("Session ID not found in URL");
+      }
+    </script>
+  </head>
+  <body>
+    <div id="embed-target"></div>
+    <div
+      style="
+        font-family: Arial;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        background-color: #fef3c7;
+      "
+    >
+      <div
+        style="
+          background-color: #fff;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          padding: 20px;
+          max-width: 450px;
+          width: 100%;
+          text-align: center;
+        "
+      >
+        <!-- Add gif or image here -->
+        <img
+          src="https://www.mastercard.co.in/content/dam/mccom/global/logos/logo-mastercard-mobile.svg"
+          alt="Mastercard"
+          style="width: 100px; height: auto"
+        />
+
+        <h2 style="color: #000; font-size: 24px">Verify your payment</h2>
+        <p style="color: #000; font-size: 16px">
+          Please verify your payment to continue
+        </p>
+        <!-- Rendering seconds conditionally -->
+        <!-- <p style="color: #000; font-size: 16px">
+          Redirecting to payment page in
+          <b style="color: #c6a34f">{seconds}</b> seconds
+        </p> -->
+
+        <input
+          type="button"
+          value="Pay with Payment Page"
+          style="
+            background-color: #c6a34f;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+          "
+          onclick="Checkout.showPaymentPage();"
+        />
+      </div>
+    </div>
+  </body>
+</html>
